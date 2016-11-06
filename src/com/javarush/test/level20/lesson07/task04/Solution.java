@@ -1,5 +1,6 @@
 package com.javarush.test.level20.lesson07.task04;
 
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,14 +18,29 @@ import java.util.Date;
 6) проверить, что savedObject.string равна loadedObject.string
 7) обработать исключения
 */
-public class Solution {
-    public static void main(String[] args) {
+public class Solution implements Serializable {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         System.out.println(new Solution(4));
+        File file = new File("C:/Users/K.Perov/Desktop/JAVA/tt.txt");
+        ObjectOutputStream OOS = new ObjectOutputStream(new FileOutputStream(file));
+        ObjectInputStream OIS = new ObjectInputStream(new FileInputStream(file));
+        Solution savedObject = new Solution(10);
+
+        OOS.writeObject(savedObject);
+        OOS.close();
+
+        Solution loadedObject = new Solution(11);
+        loadedObject = (Solution) OIS.readObject();
+        OIS.close();
+
+        System.out.println(savedObject.string.equals(loadedObject.string));
+
+
     }
 
-    private final String pattern = "dd MMMM yyyy, EEEE";
-    private Date currentDate;
-    private int temperature;
+    private transient final String pattern = "dd MMMM yyyy, EEEE";
+    private transient Date currentDate;
+    private transient int temperature;
     String string;
 
     public Solution(int temperature) {
