@@ -1,0 +1,6 @@
+*.iml
+.idea
+out
+*.tmp
+src/DO NOT READ.txt
+*.properties
